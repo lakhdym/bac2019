@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ab">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>  
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <title>Doros bac</title>
+
+
+    <script src="lib/ft/fastclick.js"></script>
+
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="http://www.doros-maroc.info/kamal_app/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="http://www.doros-maroc.info/kamal_app/css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <!--  Scripts-->
+  <script src="http://www.doros-maroc.info/kamal_app/js/jquery-2.1.1.min.js"></script>
+  <script src="http://www.doros-maroc.info/kamal_app/js/materialize.js"></script>
+  <script src="http://www.doros-maroc.info/kamal_app/js/init.js"></script>  
+    <!-- AdMob plugin demo code -->
+<script>
+  // fix wp8 view port issue, see:
+  // https://github.com/floatinghotpot/cordova-admob-pro/issues/109
+  // https://coderwall.com/p/zk_2la/responsive-design-in-ie-10-on-windows-phone-8
+  // http://stackoverflow.com/questions/24007577/windows-phone-8-viewport-issue
+(function() {
+  if ("-ms-user-select" in document.documentElement.style && navigator.userAgent.match(/IEMobile\/10\.0/)) {
+    var msViewportStyle = document.createElement("style");
+    msViewportStyle.appendChild(
+      document.createTextNode("@-ms-viewport{width:auto!important}")
+    );
+    document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
+  }
+})();
+</script>
+
+<!-- optional -->
+<script type="text/javascript" src="js/jquery-1.9.js"></script>
+
+    <script src="intelxdk.js"></script>         
+    <script src="cordova.js"></script>          
+    <script src="xhr.js"></script>              
+
+    <script src="js/app.js"></script>
+    <script src="js/init-app.js"></script>
+    <script src="js/init-dev.js"></script> 
+
+
+</head>
+ <!-- inappbrowser -->     
+<script src="cordova.js"></script>
+<script>
+
+$(document).on('click',"a[target='_blank']",function(e){  
+  var  lien=$(this).attr("href");
+    if(lien!=''){
+  window.open(lien, '_blank', '');
+    }
+  return false; 
+  });
+
+
+</script>
+        <script>
+		var site_partage="https://play.google.com/store/apps/details?id=doros.maroc.B2017";
+		
+		
+	 function social_share()
+        {   
+
+            window.plugins.socialsharing.share("App Doros Maroc","Telecharger cette application ",null,site_partage,function(result){
+                alert('result: ' + result);
+            }, function(result){
+                alert('error: ' + result);
+            });
+        }
+</script> 
+<script>
+$(document).ready(function(){
+	/* */
+	$.urlParam = function(name){
+    var results = new RegExp('[\?&amp;]' + name + '=([^&amp;#]*)').exec(window.location.href);
+	if(results){return results[1]}else{return 0;}}
+	
+	var id=$.urlParam("id");
+$(".loading").show();
+ $.ajax({
+		url     : 'http://www.doros-maroc.info/kamal_app/ws/index.php?method=listniveaux',
+		type    : 'GET',
+		dataType: 'json',
+		data    : {},
+		success : function(resp){						
+	var list="";
+	var data_g=resp.data;
+	var i=0;
+	list+="<li class='row menu'>القائمة</li>";	
+	for(i=0;i<data_g.length;i++){ 
+	list+="<li class='row collection-item'>";
+if(data_g[i].id_niveau==3){
+	list+="<a href='matiers.html?id=4' id='download-button' class='btn-large waves-effect waves-teal '>"+data_g[i].niveau+"</a>";
+	}else{
+	list+="<a href='matiers.html?id="+data_g[i].id_niveau+"' id='download-button' class='btn-large waves-effect waves-teal '>"+data_g[i].niveau+"</a>";
+	}
+	list+="</li>";
+	}
+		
+      list+="<li class='lien_face'><a  href='https://www.facebook.com/1406662139603812'  target='_blank' >تابعنا على الفيسبوك</a></li>";            
+				$("#nav-mobile").html(list);	
+		},
+		error   : function(request){
+			alert("Erreur de connexion au serveur!");
+		}
+	});	
+	
+ $.ajax({
+		url     : 'http://www.doros-maroc.info/kamal_app/ws/index.php?method=video&id='+id,
+		type    : 'GET',
+		dataType: 'json',
+		data    : {},
+		success : function(resp){
+	
+	var list="";
+	var lien="";
+	var data_g=resp.data;
+	var i=0;
+
+	 list="<iframe width='100%' height='100%' src='https://www.youtube-nocookie.com/embed/"+data_g[0].lien+"' frameborder='0' allowfullscreen></iframe>";
+	 if (data_g[0].lien_telechargement!='') {
+	lien+="<a class='center' target='_blank'  href='"+data_g[0].lien_telechargement+"'>Télécharger</a>";
+	 };
+
+
+				$('#titre').append(data_g[0].titre)
+				$(".loading").hide();			
+				$(".video-container").html(list);	
+				$(".video-lien").html(lien);
+		},
+		error   : function(request){
+			$(".erreur").show();
+			alert("Erreur de connexion au serveur!");
+		}
+	});
+ 
+/*$(".loading").show(); 	*/
+});
+
+</script>
+		<!-- END  javascript -->
+<script src="http://www.doros-maroc.info/kamal_app/js/admobile_video.js"></script>
+
+<body id="video">
+  <div class="row center loading">
+    <img src="http://www.doros-maroc.info/kamal_app/img/loading_create.gif" />
+  </div>
+
+  <nav class="navigation_menu" role="navigation">
+      <ul id="nav-mobile" class="side-nav">
+
+      </ul>
+      <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+
+		<h4 id="titre"></h4>
+   	<a href="javascript:history.go(-1)"  class="btn_retour">
+		<i class="material-icons">chevron_right</i>
+	</a> 		
+  </nav>
+    <div  class="">
+<a href='https://www.facebook.com/1406662139603812'  target="_blank"><img src="http://www.doros-maroc.info/kamal_app/img/img_pub.png" class="img_pub responsive-img">
+    </a>
+    </div>
+    <div  class="video-container">
+
+
+    </div>
+<div class="video-lien container center">
+
+</div>
+    
+	
+  
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-5071984715788454",
+    enable_page_level_ads: true
+  });
+</script>
+  <footer class="footer"  >	
+  <ul>
+  <a href="index.html">
+	  <li class="waves-effect waves-light">  
+		<img src="img/home_24.png" alt="Home" />
+	  </li>
+  </a>
+  </a>  
+     
+    <a class="" onclick="social_share();" href="javascript:;">
+	  <li class="waves-effect waves-light"> 
+		<img src="img/ic_share_white_24dp.png" alt="Share" />
+	  </li>
+ 
+  </ul>  
+  
+  </footer>
+
+  </body>
+
+</html>

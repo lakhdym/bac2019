@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <style>
+        @-ms-viewport { width: 100vw ; zoom: 100% ; }                           
+        @viewport { width: 100vw ; zoom: 100% ; }
+        @-ms-viewport { user-zoom: fixed ; }                                    
+        @viewport { user-zoom: fixed ; }
+    </style>
+
+    <script src="lib/ft/fastclick.js"></script>
+
+    <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+    <button onclick="social_share();">Share on Social Sites</button>
+    <button onclick="email_share();">Share via E-Mail</button>
+    <button onclick="sms_share();">Share via SMS</button>
+    
+    <script src="intelxdk.js"></script>         
+    <script src="cordova.js"></script>          
+    <script src="xhr.js"></script>              
+
+    <script src="js/app.js"></script>
+    <script src="js/init-app.js"></script>
+    <script src="js/init-dev.js"></script>
+    <script>
+        function social_share()
+        {   
+            window.plugins.socialsharing.share("Blog Post Title","Post Summery",null,"http://qnimate.com",function(result){
+                alert('result: ' + result);
+            }, function(result){
+                alert('error: ' + result);
+            });
+        }
+        
+        function email_share()
+        {   
+            window.plugins.socialsharing.canShareViaEmail(function(){
+                alert("Email client is configured");
+            }, function(){
+                alert("Email client is not configured");
+            });
+            
+            window.plugins.socialsharing.shareViaEmail('Email Body','Subject',['to@person1.com', 'to@person2.com'],['cc@person1.com'],null,['https://www.google.nl/images/srpr/logo4w.png'],function(result){
+                alert('result: ' + result);
+            },function(result){
+                alert('result: ' + result);
+            });
+        }
+        
+        function sms_share()
+        {
+            window.plugins.socialsharing.shareViaSMS('Message', '1223221312,8172645367');
+        }
+    </script>
+</body>
+</html>
